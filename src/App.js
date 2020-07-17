@@ -4,22 +4,6 @@ import { connect } from 'react-redux';
 import './App.css';
 
 class App extends Component {
-  // state = { age: 21 };
-
-  // onAgeUp = () => {
-  //   this.setState({
-  //     ...this.state,
-  //     age: ++this.state.age
-  //   });
-  // }
-
-  // onAgeDown = () => {
-  //   this.setState({
-  //     ...this.state,
-  //     age: --this.state.age
-  //   });
-  // }
-
   render() {
     return (
       <div className="App">
@@ -30,6 +14,19 @@ class App extends Component {
             <div>
               <button onClick={this.props.onAgeUp}>Age UP</button>
               <button onClick={this.props.onAgeDown}>Age DOWN</button>
+              <hr />
+              <div>
+                <p>History</p>
+                <ul>
+                  {
+                    this.props.history.map(el => {
+                      return <li key={el.id} onClick={() => this.props.onDelItem(el.id)}>
+                        {el.age}
+                      </li>
+                    })
+                  }
+                </ul>
+              </div>
             </div>
           </div>
         </header>
@@ -40,13 +37,15 @@ class App extends Component {
 
 const mapStateToProps = (state) =>{
   return {
-    age: state.age
+    age: state.age,
+    history: state.history
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAgeUp: () => dispatch({type: 'AGE_UP'}),
-    onAgeDown: () => dispatch({type: 'AGE_DOWN'})
+    onAgeUp: () => dispatch({type: 'AGE_UP', value: 1}),
+    onAgeDown: () => dispatch({type: 'AGE_DOWN', value: 1}),
+    onDelItem: (id) => dispatch({type: 'DEL_ITEM', key: id})
   };
 }
 
